@@ -1,0 +1,29 @@
+.ripple-surface {
+  overflow: visible;
+}
+
+.taskHeader {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  &__btns {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .nav {
+    flex-direction: column;
+  }
+  .taskHeader {
+    flex-direction: column;
+    &__btns {
+      flex-direction: column;
+      margin-bottom: 0px;
+      button {
+        margin-bottom: 15px;
+        width: 75%;
+      }
+    }
+  }
+}
