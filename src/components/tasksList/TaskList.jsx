@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import UserContext from "../../contexts/userContext";
-import { MDBCard, MDBCardBody, MDBCol, MDBContainer, MDBListGroup, MDBRow } from "mdb-react-ui-kit";
+import { MDBCardBody, MDBListGroup } from "mdb-react-ui-kit";
 import "./taskList.scss";
-import TaskItem from "./taskItem/TaskItem";
-import TaskForm from "./taskForm/TaskForm";
-import TaskTabs from "./taskTabs/TaskTabs";
-import TaskBtns from "./taskBtns/TaskBtns";
+import TaskItem from "../taskItem/TaskItem";
+import TaskForm from "../taskForm/TaskForm";
+import TaskTabs from "../taskTabs/TaskTabs";
+import ButtonsGroupActions from "../buttonsGroupActions/ButtonsGroupActions";
+import { toast } from "react-toastify";
 
 export default class TaskList extends Component {
   static contextType = UserContext;
   constructor() {
     super();
     this.chosedTasks = [];
-    this.state = { currentTab: "active", displayBtn: "none", store: { active: [] } };
+    this.state = { displayBtn: "none", store: { active: [] } };
   }
   displayBtnHandler = () => {
     if (this.chosedTasks.length >= 1) {
@@ -30,9 +31,13 @@ export default class TaskList extends Component {
     });
     this.context.state.changeStatus(store);
     this.deleteTasks();
+    toast.success(`Task remove to ${to}`);
   };
   deleteTasks = () => {
-    const { store, currentTab } = this.state;
+    const {
+      state: { store },
+      currentTab,
+    } = this;
     this.chosedTasks.map((task) => {
       const index = store[currentTab].indexOf(task);
       store[currentTab].splice(index, 1);
@@ -40,11 +45,6 @@ export default class TaskList extends Component {
     this.chosedTasks = [];
     this.displayBtnHandler();
     this.context.state.deleteTasks(this.state.store);
-  };
-  handleTabClick = (currentTab) => {
-    this.chosedTasks = [];
-    this.setState({ currentTab });
-    this.displayBtnHandler();
   };
   checkboxHandler = (task) => {
     const { chosedTasks } = this;
@@ -57,40 +57,41 @@ export default class TaskList extends Component {
     this.displayBtnHandler();
   };
   componentDidMount() {
-    const store = this.context.state.store;
-    this.setState({ store });
+    const {
+      state: { store },
+    } = this.context;
+    this.setState({ store: store });
+  }
+  handleTabClick = (currentTab) => {
+    this.chosedTasks = [];
+    this.context.state.setCurrentTab({ currentTab });
+    this.displayBtnHandler();
+  };
+  componentDidUpdate() {
+    this.currentTab = this.context.state.currentTab;
   }
   render() {
-    const { currentTab, store, displayBtn } = this.state;
+    const { displayBtn } = this.state;
     const { handleTabClick, checkboxHandler, deleteTasks } = this;
+    const { currentTab, store } = this.context.state;
     return (
-      <section className="gradient-custom vh-100">
-        <MDBContainer className="py-5 h-100">
-          <MDBRow className="d-flex justify-content-center align-items-center">
-            <MDBCol xl="10">
-              <MDBCard>
-                <MDBCardBody className="p-5">
-                  <TaskForm />
-                  <div className="taskHeader">
-                    <TaskTabs handleClick={handleTabClick} currentTab={currentTab} />
-                    <TaskBtns
-                      display={displayBtn}
-                      changeStatus={this.changeStatus}
-                      deleteTasks={deleteTasks}
-                      currentTab={currentTab}
-                    />
-                  </div>
-                  <MDBListGroup className="mb-0">
-                    {store[currentTab].map((item) => (
-                      <TaskItem item={item} key={item.id} checkHandler={checkboxHandler} />
-                    ))}
-                  </MDBListGroup>
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      </section>
+      <MDBCardBody className="p-5">
+        <TaskForm />
+        <div className="taskHeader">
+          <TaskTabs handleClick={handleTabClick} currentTab={currentTab} displayBtnHandler={this.displayBtnHandler} />
+          <ButtonsGroupActions
+            display={displayBtn}
+            changeStatus={this.changeStatus}
+            deleteTasks={deleteTasks}
+            currentTab={currentTab}
+          />
+        </div>
+        <MDBListGroup className="mb-0">
+          {store[currentTab].map((item) => (
+            <TaskItem item={item} key={item.id} checkHandler={checkboxHandler} />
+          ))}
+        </MDBListGroup>
+      </MDBCardBody>
     );
   }
 }

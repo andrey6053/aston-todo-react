@@ -1,9 +1,14 @@
 import React, { Component } from "react";
 import { MDBBtn } from "mdb-react-ui-kit";
+import { toast } from "react-toastify";
 
-export default class TaskBtns extends Component {
+export default class ButtonsGroupActions extends Component {
+  deleteBtnHandler = () => {
+    this.props.deleteTasks();
+    toast.success("Task deleted");
+  };
   render() {
-    const { currentTab, changeStatus, deleteTasks } = this.props;
+    const { currentTab, changeStatus } = this.props;
     return (
       <div className="taskHeader__btns" style={{ display: `${this.props.display}` }}>
         <MDBBtn
@@ -24,7 +29,7 @@ export default class TaskBtns extends Component {
         >
           {currentTab === "archive" ? "Complete" : "Archive"}
         </MDBBtn>
-        <MDBBtn type="button" onClick={deleteTasks} color="danger" className="ms-2">
+        <MDBBtn type="button" onClick={this.deleteBtnHandler} color="danger" className="ms-2">
           Delete
         </MDBBtn>
       </div>
