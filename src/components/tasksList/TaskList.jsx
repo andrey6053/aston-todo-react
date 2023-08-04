@@ -29,7 +29,7 @@ export default class TaskList extends Component {
       task.status = to;
       store[to].push(task);
     });
-    this.context.state.changeStatus(store);
+    this.context.state.updateStore(store);
     this.deleteTasks();
     toast.success(`Task remove to ${to}`);
   };
@@ -44,7 +44,7 @@ export default class TaskList extends Component {
     });
     this.chosedTasks = [];
     this.displayBtnHandler();
-    this.context.state.deleteTasks(this.state.store);
+    this.context.state.updateStore(this.state.store);
   };
   checkboxHandler = (task) => {
     const { chosedTasks } = this;

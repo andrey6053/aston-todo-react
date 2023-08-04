@@ -15,10 +15,10 @@ export default class TaskForm extends Component {
   }
   taskBtnHandler() {
     const { inputTask } = this.state;
-    const { store, addTask } = this.context.state;
+    const { store, updateStore } = this.context.state;
     if (inputTask.length < 2) return toast.warning("Must be at least 2 symbols");
     store.active.push({ title: inputTask, body: "", id: Date.now(), status: "active" });
-    addTask(store);
+    updateStore(store);
     this.setState({ inputTask: "" });
     toast.success("Task success added");
   }

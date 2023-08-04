@@ -34,7 +34,7 @@ export default class TaskItem extends Component {
         task.body = body;
       }
     });
-    this.context.state.updateTask(store);
+    this.context.state.updateStore(store);
     this.hideModal();
     toast.success("Task edited");
   };
