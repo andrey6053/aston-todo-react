@@ -3,6 +3,7 @@ import { MDBInput } from "mdb-react-ui-kit";
 import "./header.scss";
 import UserContext from "../../contexts/userContext";
 import { debounce } from "lodash";
+import ThemeButton from "../themeButton/ThemeButton";
 
 export default class Header extends Component {
   static contextType = UserContext;
@@ -52,6 +53,7 @@ export default class Header extends Component {
           id="search"
           type="text"
         />
+        <ThemeButton />
       </div>
     );
   }

@@ -1,0 +1,37 @@
+.dark {
+  --color-text: #fff;
+  --bg-input: #fff;
+  --bg-color-primary: #303030;
+  --body-color: #fff;
+}
+
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  color: var(--body-color);
+  background: var(--bg-color-primary);
+}
+
+#search {
+  color: var(--color-text);
+}
+
+#form1 {
+  color: var(--color-text);
+}
+
+.form-outline .form-control ~ .form-label {
+  color: var(--body-text);
+}
+
+.form-outline .form-control:focus ~ .form-label,
+.form-outline .form-control.active ~ .form-label {
+  color: var(--body-text);
+}
+
+.nav-tabs .nav-link {
+  color: var(--color-text);
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--bg-color-primary);
+}

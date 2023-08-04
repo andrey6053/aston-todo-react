@@ -1,4 +1,9 @@
 .header {
   padding: 15px 48px 0px 48px;
-  max-width: 400px;
+  display: flex;
+  justify-content: space-between;
+  .form-outline {
+    max-width: 300px;
+    margin-right: 0.5rem;
+  }
 }

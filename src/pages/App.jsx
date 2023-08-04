@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.scss";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import UserContext from "../contexts/userContext";
 import TaskList from "../components/tasksList/TaskList";
 import Toast from "../components/toast/Toast";
@@ -9,7 +10,6 @@ import Header from "../components/header/Header";
 export default class App extends Component {
   constructor() {
     super();
-    this.setTheme = (theme) => this.setState(theme);
     this.deleteTasks = (store) => this.setState({ store: { ...store } });
     this.changeStatus = (store) => this.setState({ store: { ...store } });
     this.addTask = (store) => this.setState({ store: { ...store } });
@@ -19,18 +19,22 @@ export default class App extends Component {
     this.state = {
       theme: localStorage.getItem("theme") || "light",
       currentTab: "active",
-      store: localStorage.getItem("store") || {
+      store: JSON.parse(localStorage.getItem("store")) || {
         active: [],
         complete: [],
         archive: [],
       },
-      setTheme: this.setTheme,
       setCurrentTab: this.setCurrentTab,
       addTask: this.addTask,
       deleteTasks: this.deleteTasks,
       changeStatus: this.changeStatus,
       updateTask: this.updateTask,
       updateStore: this.updateStore,
+    };
+  }
+  componentDidMount() {
+    window.onbeforeunload = () => {
+      localStorage.setItem("store", JSON.stringify(this.state.store));
     };
   }
   render() {
